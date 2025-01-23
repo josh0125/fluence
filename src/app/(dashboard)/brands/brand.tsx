@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { fetchAllBrands } from "@/app/api/endpoints/fetchProducts";
-import Image from "next/image";
+// import Image from "next/image";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
+    // DropdownMenuLabel,
+    // DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";

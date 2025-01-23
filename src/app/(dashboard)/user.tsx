@@ -15,7 +15,7 @@ export async function User() {
     // let session = await auth();
     // let user = session?.user;
 
-    let user = {
+    const user = {
         name: "John Doe",
         email: "test@gmail.com",
         image: "/placeholder-user.jpg",
