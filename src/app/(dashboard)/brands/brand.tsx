@@ -18,7 +18,7 @@ export async function Brand() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon" className="p-4">
-                    Brand
+                    Brands
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
