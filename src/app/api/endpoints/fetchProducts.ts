@@ -4,12 +4,6 @@ import { Product } from "@/types/product";
 export const fetchAllProducts = async (): Promise<Product[] | null> => {
     const { data, error } = await supabase.from("products").select("*");
 
-    if (data) {
-        for (const product of data) {
-            product.brand = await fetchBrand(product.brand_id);
-        }
-    }
-
     console.log("Data", data);
 
     if (error) {
