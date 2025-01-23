@@ -13,7 +13,7 @@ import { fetchAllProducts } from "../api/endpoints/fetchProducts";
 import { createNewUser, fetchCurrentUser } from "../api/endpoints/userEndpoints";
 import { Product } from "@/types/product";
 
-export default function ProductsPage(props: { searchParams?: { q?: string; offset?: string } }) {
+export default function ProductsPage() {
     const [deals, setDeals] = useState<Product[]>([]);
 
     const { data: session, status } = useSession();
