@@ -7,14 +7,16 @@ import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { File, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ProductsTable } from "./products-table";
-import { fetchAllDeals } from "../api/endpoints/dealsEndpoints";
-import { fetchAllProducts } from "../api/endpoints/fetchProducts";
+import { DealsTable } from "./products-table";
+import { fetchAllDeals, createDeal } from "../api/endpoints/dealsEndpoints";
 import { createNewUser, fetchCurrentUser } from "../api/endpoints/userEndpoints";
-import { Product } from "@/types/product";
+import { Brand, DealData, Product } from "@/types/product";
+import { AddDealModal } from "./addDealModal";
 
 export default function ProductsPage() {
-    const [deals, setDeals] = useState<Product[]>([]);
+    const [deals, setDeals] = useState<DealData[]>([]);
+    const [email, setEmail] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -28,7 +30,7 @@ export default function ProductsPage() {
     //     fetchProducts();
     // }, []);
 
-    const handleUserAndFetchProducts = async (email: string, name: string) => {
+    const handleUserAndFetchDeals = async (email: string, name: string) => {
         try {
             const userData = await fetchCurrentUser(email);
             let userId = userData?.id;
@@ -38,14 +40,28 @@ export default function ProductsPage() {
             }
 
             if (userId) {
-                // const data = await fetchAllProducts();
-                // setProducts(data || []);
+                const dealsData = await fetchAllDeals(userId);
+                const validDeals = dealsData?.filter(
+                    (deal) => deal.product !== null && deal.brand !== null
+                ) as { product: Product; brand: Brand }[]; // Type assertion ensures non-nullability
 
-                const deals = await fetchAllDeals(userId);
-                setDeals(deals || []);
+                setDeals(validDeals);
             }
         } catch (error) {
             console.error("Error handling user or fetching products:", error);
+        }
+    };
+
+    const addDealModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleAddDeal = async (product: Product, brandId: number) => {
+        try {
+            const data = await createDeal(product, brandId, email);
+            // setDeals(data || []);
+        } catch (error) {
+            console.error("Error adding deal:", error);
         }
     };
 
@@ -55,7 +71,8 @@ export default function ProductsPage() {
             const email = session.user.email || "";
 
             if (email) {
-                handleUserAndFetchProducts(email, name);
+                setEmail(email);
+                handleUserAndFetchDeals(email, name);
             }
         }
     }, [status, session]);
@@ -82,16 +99,21 @@ export default function ProductsPage() {
                         <File className="h-3.5 w-3.5" />
                         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Export</span>
                     </Button>
-                    <Button size="sm" className="h-8 gap-1">
+                    <Button size="sm" className="h-8 gap-1" onClick={() => addDealModal()}>
                         <PlusCircle className="h-3.5 w-3.5" />
                         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                             Add Product
                         </span>
                     </Button>
+                    <AddDealModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        onSubmit={handleAddDeal}
+                    />
                 </div>
             </div>
             <TabsContent value="all">
-                <ProductsTable products={deals} offset={0} totalProducts={deals.length} />
+                <DealsTable deals={deals} offset={0} totalProducts={deals.length} />
             </TabsContent>
         </Tabs>
     );

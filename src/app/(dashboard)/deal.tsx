@@ -10,11 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { TableCell, TableRow } from "@/components/ui/table";
-// import { SelectProduct } from '@/lib/db';
-import { Product as SelectProduct } from "@/types/product";
-// import { deleteProduct } from "./actions";
+import { DealData } from "@/types/product";
 
-export function Product({ product }: { product: SelectProduct }) {
+export function Deal({ deal }: { deal: DealData }) {
     return (
         <TableRow>
             <TableCell className="hidden sm:table-cell">
@@ -22,21 +20,21 @@ export function Product({ product }: { product: SelectProduct }) {
                     alt="Product image"
                     className="aspect-square rounded-md object-cover"
                     height="64"
-                    src={`/${product.image_url ?? "placeholder-user.jpg"}`}
+                    src={`/${deal.product.image_url ?? "placeholder-user.jpg"}`}
                     width="64"
                 />
             </TableCell>
-            <TableCell className="font-medium">{product.name}</TableCell>
+            <TableCell className="font-medium">{deal.product.name}</TableCell>
             <TableCell>
                 <Badge variant="outline" className="capitalize">
-                    {product.status}
+                    {deal.product.status}
                 </Badge>
             </TableCell>
-            <TableCell className="hidden md:table-cell">{`$${product.price}`}</TableCell>
+            <TableCell className="hidden md:table-cell">{`$${deal.product.price}`}</TableCell>
             <TableCell className="hidden md:table-cell">
-                {new Date(product.availableAt).toLocaleDateString()}
+                {new Date(deal.product.available_at).toLocaleDateString()}
             </TableCell>
-            <TableCell className="hidden md:table-cell">{product.brand.name}</TableCell>
+            <TableCell className="hidden md:table-cell">{deal.brand.name}</TableCell>
             <TableCell>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
