@@ -57,7 +57,7 @@ export default function EmailPage() {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="flex flex-col h-96 justify-between">
+                <div className="flex flex-col h-full justify-between">
                     <div>
                         {emails.map((email, index) => (
                             <BubbleText
