@@ -9,6 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { DealData } from "@/types/product";
 
@@ -34,7 +35,9 @@ export function Deal({ deal }: { deal: DealData }) {
             <TableCell className="hidden md:table-cell">
                 {new Date(deal.product.available_at).toLocaleDateString()}
             </TableCell>
-            <TableCell className="hidden md:table-cell">{deal.brand.name}</TableCell>
+            <TableCell className="hidden md:table-cell underline">
+                <Link href={`/email/${deal.brand.id}`}>{deal.brand.name}</Link>
+            </TableCell>
             <TableCell>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
