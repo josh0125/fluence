@@ -10,18 +10,18 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 // import { SelectProduct } from '@/lib/db';
-import { Product as ProductType } from "@/types/product";
+import { DealData } from "@/types/product";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Product } from "./product";
+import { Deal } from "./deal";
 
-export function ProductsTable({
-    products,
+export function DealsTable({
+    deals,
     offset,
     totalProducts,
 }: {
-    products: ProductType[] | null;
+    deals: DealData[] | null;
     offset: number;
     totalProducts: number;
 }) {
@@ -60,10 +60,7 @@ export function ProductsTable({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {products &&
-                            products.map((product) => (
-                                <Product key={product.id} product={product} />
-                            ))}
+                        {deals && deals.map((deal, index) => <Deal key={index} deal={deal} />)}
                     </TableBody>
                 </Table>
             </CardContent>
