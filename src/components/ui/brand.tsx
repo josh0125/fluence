@@ -1,31 +1,28 @@
+import React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { fetchAllBrands } from "@/app/api/endpoints/fetchProducts";
-// import Image from "next/image";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    // DropdownMenuLabel,
-    // DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
+import { ChevronDown } from "lucide-react";
+import type { Brand } from "@/types/product";
 
-export async function Brand() {
-    const brands = await fetchAllBrands();
-
+export async function BrandDropdown({ brands }: { brands: Brand[] }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="p-4">
-                    Brands
+                <Button variant="outline" size="lg" className="p-4">
+                    Brands <ChevronDown className="w-6 h-6 ml-2" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 {brands &&
                     brands.map((brand) => (
                         <DropdownMenuItem key={brand.id}>
-                            <Link href={`/brands/${brand.id}`}>{brand.name}</Link>
+                            <Link href={`/email/${brand.id}`}>{brand.name}</Link>
                         </DropdownMenuItem>
                     ))}
             </DropdownMenuContent>

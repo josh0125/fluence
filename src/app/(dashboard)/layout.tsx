@@ -76,9 +76,9 @@ function DesktopNav() {
                     <Package className="h-5 w-5" />
                 </NavItem> */}
 
-                <NavItem href="/brands" label="Brands">
+                {/* <NavItem href="/brands" label="Brands">
                     <Users2 className="h-5 w-5" />
-                </NavItem>
+                </NavItem> */}
 
                 <NavItem href="/email" label="Emails">
                     <Mail className="h-5 w-5" />
@@ -138,13 +138,13 @@ function MobileNav() {
                         <Package className="h-5 w-5" />
                         Products
                     </Link> */}
-                    <Link
+                    {/* <Link
                         href="/brands"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
                         <Users2 className="h-5 w-5" />
                         Brands
-                    </Link>
+                    </Link> */}
                     <Link
                         href="/email"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"

@@ -1,13 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brand } from "@/app/(dashboard)/brands/brand";
+import { BrandDropdown } from "@/components/ui/brand";
 
 export default function BrandPage() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>
-                    <Brand />
-                </CardTitle>
+                <CardTitle>{/* <BrandDropdown /> */}</CardTitle>
                 <CardDescription>View brands and their orders.</CardDescription>
             </CardHeader>
             <CardContent></CardContent>
