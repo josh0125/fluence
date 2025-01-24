@@ -61,19 +61,16 @@ export const fetchAllBrands = async () => {
 };
 
 export const createDeal = async (product: Product, brandId: number, email: string) => {
-    console.log("Product:", product);
     const { data: productData, error: productError } = await supabase
         .from("products")
         .insert([product]);
 
-    console.log("Product data:", productData);
     if (productError) {
         console.error("Error adding product", productError.message);
         return null;
     }
 
-    // I need to get the new product ID to create the deal  - how do I do this?
-    // const productId = productData?.[0]?.id;
+    // Still need to fix this part
 
     const userData = await fetchCurrentUser(email);
 
