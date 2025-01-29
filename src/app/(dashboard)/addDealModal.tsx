@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Brand, Product } from "@/types/product";
+import { Brand, Product } from "@/types/types";
 import { fetchAllBrands } from "@/app/api/endpoints/dealsEndpoints";
 
 type AddDealModalProps = {
@@ -33,18 +33,19 @@ export function AddDealModal({ isOpen, onClose, onSubmit }: AddDealModalProps) {
         }
 
         const newProduct: Product = {
-            id: Math.floor(Math.random() * 100000), // Generate a temporary ID
+            product_id: Math.floor(Math.random() * 100000), // Generate a temporary ID
             image_url: "https://via.placeholder.com/150", // Placeholder for now
-            name,
-            status,
+            product_name: name,
             price,
-            available_at: availableAt, // Convert to ISO string
+            brand_id: brandId,
+            description: "",
+            created_at: new Date().toISOString(),
         };
 
-        const brand = brands.find((b) => b.id === brandId);
+        const brand = brands.find((b) => b.brand_id === brandId);
 
         if (brand) {
-            onSubmit(newProduct, brand.id);
+            onSubmit(newProduct, brand.brand_id);
         } else {
             alert("Selected brand not found.");
         }
@@ -105,8 +106,8 @@ export function AddDealModal({ isOpen, onClose, onSubmit }: AddDealModalProps) {
                             onChange={(e) => setBrandId(Number(e.target.value))}
                         >
                             {brands.map((brand) => (
-                                <option key={brand.id} value={brand.id}>
-                                    {brand.name}
+                                <option key={brand.brand_id} value={brand.brand_id}>
+                                    {brand.brand_name}
                                 </option>
                             ))}
                         </select>

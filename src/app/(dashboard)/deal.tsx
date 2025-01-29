@@ -11,7 +11,7 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { DealData } from "@/types/product";
+import { DealData } from "@/types/types";
 
 export function Deal({ deal }: { deal: DealData }) {
     return (
@@ -25,18 +25,18 @@ export function Deal({ deal }: { deal: DealData }) {
                     width="64"
                 />
             </TableCell>
-            <TableCell className="font-medium">{deal.product.name}</TableCell>
+            <TableCell className="font-medium">{deal.product.product_name}</TableCell>
             <TableCell>
                 <Badge variant="outline" className="capitalize">
-                    {deal.product.status}
+                    {deal.status}
                 </Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">{`$${deal.product.price}`}</TableCell>
             <TableCell className="hidden md:table-cell">
-                {new Date(deal.product.available_at).toLocaleDateString()}
+                {new Date(deal.created_at).toLocaleDateString()}
             </TableCell>
             <TableCell className="hidden md:table-cell underline">
-                <Link href={`/email/${deal.brand.id}`}>{deal.brand.name}</Link>
+                <Link href={`/email/${deal.brand.brand_id}`}>{deal.brand.brand_name}</Link>
             </TableCell>
             <TableCell>
                 <DropdownMenu>

@@ -10,7 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 // import { SelectProduct } from '@/lib/db';
-import { DealData } from "@/types/product";
+import { DealData } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
