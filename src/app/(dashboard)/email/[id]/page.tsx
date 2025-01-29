@@ -39,7 +39,6 @@ export default function EmailPage() {
     }, [status, session]);
 
     const handleFetchMessages = async (brand_id: number, email: string) => {
-        console.log("fetching messages", brand_id, email);
         const messages = (await fetchMessages(brand_id, email)) || [];
         setEmails(messages);
     };
@@ -63,7 +62,7 @@ export default function EmailPage() {
                             <BubbleText
                                 key={index}
                                 text={email.content}
-                                sender={email.sender}
+                                sender={email.sender_type === "user" ? true : false}
                                 image_url={null}
                             />
                         ))}

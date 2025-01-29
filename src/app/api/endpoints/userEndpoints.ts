@@ -1,26 +1,26 @@
 import { supabase } from "@/app/api/clients/supabaseClient";
 
-export const createNewUser = async (name: string, email: string) => {
+export const createNewUser = async (username: string, email: string) => {
     try {
         const { data: newUser, error: insertError } = await supabase
             .from("users")
             .insert([
                 {
-                    name: name,
+                    username: username, // Changed 'name' to 'username' to match the database schema
                     email: email,
                 },
             ])
-            .select("id")
+            .select("user_id") // Changed 'id' to 'user_id' to match schema
             .single();
+
         if (insertError) {
-            console.error("Error inserting user:", insertError.message);
+            console.error("Error inserting user:", insertError?.message);
             return;
         }
-        console.log("User added to the table successfully!");
-        const userId = newUser.id;
-        return userId;
+
+        return newUser?.user_id; // Return the correct user_id
     } catch (error) {
-        console.error("Error fetching current user:", error);
+        console.error("Error inserting user:", error);
     }
 };
 
@@ -30,7 +30,7 @@ export const fetchCurrentUser = async (email: string | undefined | null) => {
     try {
         const { data: userData, error: userError } = await supabase
             .from("users")
-            .select("id, name, email")
+            .select("user_id, username, email") // Changed 'id' to 'user_id' and 'name' to 'username'
             .eq("email", email)
             .single();
 
@@ -38,6 +38,7 @@ export const fetchCurrentUser = async (email: string | undefined | null) => {
             console.error("Error fetching current user:", userError.message);
             return;
         }
+
         return userData;
     } catch (error) {
         console.error("Error fetching current user:", error);

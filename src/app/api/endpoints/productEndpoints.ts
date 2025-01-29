@@ -1,10 +1,8 @@
 import { supabase } from "../clients/supabaseClient";
-import { Product } from "@/types/product";
+import { Product } from "@/types/types";
 
 export const fetchAllProducts = async (): Promise<Product[] | null> => {
     const { data, error } = await supabase.from("products").select("*");
-
-    console.log("Data", data);
 
     if (error) {
         console.error("Error fetching products", error.message);
@@ -16,8 +14,6 @@ export const fetchAllProducts = async (): Promise<Product[] | null> => {
 
 export const fetchBrand = async (id: number) => {
     const { data, error } = await supabase.from("brands").select("*").eq("id", id);
-
-    console.log("Brand", data);
 
     if (error) {
         console.error("Error fetching brand", error.message);

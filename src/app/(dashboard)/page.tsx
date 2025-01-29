@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { DealsTable } from "./products-table";
 import { fetchAllDeals, createDeal } from "../api/endpoints/dealsEndpoints";
 import { createNewUser, fetchCurrentUser } from "../api/endpoints/userEndpoints";
-import { Brand, DealData, Product } from "@/types/product";
+import { DealData, Product } from "@/types/types";
 import { AddDealModal } from "./addDealModal";
 
 export default function ProductsPage() {
@@ -33,7 +33,7 @@ export default function ProductsPage() {
     const handleUserAndFetchDeals = async (email: string, name: string) => {
         try {
             const userData = await fetchCurrentUser(email);
-            let userId = userData?.id;
+            let userId = userData?.user_id;
 
             if (!userId) {
                 userId = await createNewUser(name, email);
@@ -41,9 +41,12 @@ export default function ProductsPage() {
 
             if (userId) {
                 const dealsData = await fetchAllDeals(userId);
-                const validDeals = dealsData?.filter(
-                    (deal) => deal.product !== null && deal.brand !== null
-                ) as { product: Product; brand: Brand }[]; // Type assertion ensures non-nullability
+                const validDeals = dealsData
+                    ?.filter((deal) => deal.product !== null && deal.brand !== null)
+                    .map((deal) => ({
+                        ...deal,
+                        created_at: deal.created_date || new Date().toISOString(),
+                    })) as DealData[]; // Type assertion ensures non-nullability
 
                 setDeals(validDeals);
             }

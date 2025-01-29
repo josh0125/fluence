@@ -1,52 +1,55 @@
 import { supabase } from "../clients/supabaseClient";
-import { Product, Brand, Deal } from "@/types/product";
+import { Product, Brand, Deal } from "@/types/types";
 import { fetchCurrentUser } from "./userEndpoints";
 
 export const fetchAllDeals = async (user_id: number) => {
-    const { data, error } = await supabase.from("deals").select("*").eq("user_id", user_id);
-
-    const deals = await Promise.all(
-        data?.map(async (deal) => {
-            const product = await fetchProduct(deal.product_id);
-            const brand = await fetchBrand(deal.brand_id);
-
-            const dealData = {
-                product: product,
-                brand: brand,
-            };
-            return dealData;
-        }) || []
-    );
+    const { data, error } = await supabase
+        .from("deals")
+        .select("*, products(*, brands(*))")
+        .eq("user_id", user_id);
 
     if (error) {
         console.error("Error fetching deals", error.message);
         return null;
     }
 
-    return deals || [];
+    const deals =
+        data?.map((deal) => ({
+            product: deal.products,
+            brand: deal.products?.brands,
+            created_date: deal.created_at,
+            deal_id: deal.deal_id,
+            status: deal.status,
+        })) || [];
+
+    return deals;
 };
 
-export const fetchProduct = async (id: number): Promise<Product | null> => {
-    if (!id) return null;
-    const { data, error } = await supabase.from("products").select("*").eq("id", id);
+export const fetchProduct = async (product_id: number): Promise<Product | null> => {
+    if (!product_id) return null;
+    const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("product_id", product_id);
 
     if (error) {
-        console.error("Error fetching products", error.message);
+        console.error("Error fetching product", error.message);
         return null;
     }
 
-    return data ? data[0] : null;
+    return data?.[0] || null;
 };
 
-export const fetchBrand = async (id: number): Promise<Brand | null> => {
-    const { data, error } = await supabase.from("brands").select("*").eq("id", id);
+export const fetchBrand = async (brand_id: number): Promise<Brand | null> => {
+    if (!brand_id) return null;
+    const { data, error } = await supabase.from("brands").select("*").eq("brand_id", brand_id);
 
     if (error) {
         console.error("Error fetching brand", error.message);
         return null;
     }
 
-    return data ? data[0] : null;
+    return data?.[0] || null;
 };
 
 export const fetchAllBrands = async () => {
@@ -61,31 +64,59 @@ export const fetchAllBrands = async () => {
 };
 
 export const createDeal = async (product: Product, brandId: number, email: string) => {
+    // Insert product
     const { data: productData, error: productError } = await supabase
         .from("products")
-        .insert([product]);
+        .insert([product])
+        .select("*")
+        .single(); // Ensures we get the inserted row
 
     if (productError) {
         console.error("Error adding product", productError.message);
         return null;
     }
 
-    // Still need to fix this part
-
+    // Fetch the current user
     const userData = await fetchCurrentUser(email);
+    if (!userData) {
+        console.error("Error: User not found");
+        return null;
+    }
 
-    const deal = { product_id: 1, brand_id: brandId, user_id: userData?.id };
+    // Fetch the brand representative
+    const { data: brandRepData, error: brandRepError } = await supabase
+        .from("brand_representatives")
+        .select("*")
+        .eq("brand_id", brandId)
+        .limit(1)
+        .single(); // Get one representative
 
-    // const productId = productData ? productData?.id : null;
+    if (brandRepError) {
+        console.error("Error fetching brand representative", brandRepError.message);
+        return null;
+    }
 
-    const { data: dealData, error: dealError } = await supabase.from("deals").insert(deal);
+    // Insert deal
+    const deal = {
+        product_id: productData.product_id,
+        user_id: userData.user_id,
+        rep_id: brandRepData.rep_id,
+        thread_id: null, // A thread should be created before assigning this
+        status: "pending", // Default status
+        terms: "Standard deal terms",
+        compensation: 0.0, // Default compensation
+    };
 
-    console.log("Deal data:", dealData);
+    const { data: dealData, error: dealError } = await supabase
+        .from("deals")
+        .insert([deal])
+        .select("*")
+        .single();
 
     if (dealError) {
         console.error("Error adding deal", dealError.message);
         return null;
     }
 
-    return dealData || [];
+    return dealData;
 };
