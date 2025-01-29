@@ -1,20 +1,21 @@
 import type { Config } from "tailwindcss";
 
 export default {
-    darkMode: ["class"],
+    darkMode: ["class"], // Enables dark mode based on a class
     content: [
         "./pages/**/*.{ts,tsx}",
         "./components/**/*.{ts,tsx}",
         "./app/**/*.{ts,tsx}",
         "./src/**/*.{ts,tsx}",
+        "./content/**/*.{ts,tsx,md,mdx}", // Added support for markdown files if needed
     ],
-    prefix: "",
+    prefix: "", // Default prefix
     theme: {
         container: {
-            center: true,
-            padding: "2rem",
+            center: true, // Centers the container
+            padding: "2rem", // Adds padding
             screens: {
-                "2xl": "1400px",
+                "2xl": "1400px", // Customizes container width for 2xl screens
             },
         },
         extend: {
@@ -72,7 +73,41 @@ export default {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
+            typography: ({ theme }: { theme: (path: string) => string }) => ({
+                DEFAULT: {
+                    css: {
+                        color: theme("colors.foreground"),
+                        a: {
+                            color: theme("colors.primary.DEFAULT"),
+                            textDecoration: "none",
+                            "&:hover": {
+                                textDecoration: "underline",
+                            },
+                        },
+                        h1: {
+                            fontWeight: "700",
+                            color: theme("colors.foreground"),
+                        },
+                        h2: {
+                            fontWeight: "600",
+                            color: theme("colors.foreground"),
+                        },
+                        blockquote: {
+                            fontStyle: "italic",
+                            color: theme("colors.muted.foreground"),
+                        },
+                        code: {
+                            backgroundColor: theme("colors.muted.DEFAULT"),
+                            padding: "0.2rem 0.4rem",
+                            borderRadius: theme("borderRadius.sm"),
+                        },
+                    },
+                },
+            }),
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [
+        require("tailwindcss-animate"), // Animation plugin
+        require("@tailwindcss/typography"), // Adds support for markdown styling
+    ],
 } satisfies Config;

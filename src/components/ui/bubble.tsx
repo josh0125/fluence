@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 interface BubbleTextProps {
     text: string;
@@ -8,9 +10,15 @@ interface BubbleTextProps {
 }
 
 const BubbleText: React.FC<BubbleTextProps> = ({ text, sender = false, image_url }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    // Split the text into paragraphs
+    const paragraphs = text.split("\n").filter((p) => p.trim() !== "");
+    const visibleParagraphs = expanded ? paragraphs : paragraphs.slice(0, 3);
+
     return (
         <div
-            className={`flex items-center gap-2 ${sender ? "flex-row-reverse" : "flex-row"} mb-2`}
+            className={`flex items-start gap-2 ${sender ? "flex-row-reverse" : "flex-row"} mb-2`}
             style={{
                 alignSelf: sender ? "flex-end" : "flex-start",
                 margin: sender ? "0 0 10px auto" : "0 auto 10px 0",
@@ -30,7 +38,22 @@ const BubbleText: React.FC<BubbleTextProps> = ({ text, sender = false, image_url
                     sender ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
                 }`}
             >
-                {text}
+                <div className="prose">
+                    {visibleParagraphs.map((paragraph, index) => (
+                        <ReactMarkdown key={index} rehypePlugins={[rehypeRaw]}>
+                            {paragraph}
+                        </ReactMarkdown>
+                    ))}
+                </div>
+                {/* "Read More" Button */}
+                {paragraphs.length > 2 && (
+                    <button
+                        onClick={() => setExpanded(!expanded)}
+                        className="text-blue-500 text-xs mt-2 hover:underline"
+                    >
+                        {expanded ? "Show Less" : "Read More"}
+                    </button>
+                )}
             </div>
         </div>
     );

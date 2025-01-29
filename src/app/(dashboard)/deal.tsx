@@ -33,7 +33,9 @@ export function Deal({ deal }: { deal: DealData }) {
             </TableCell>
             <TableCell className="hidden md:table-cell">{`$${deal.product.price}`}</TableCell>
             <TableCell className="hidden md:table-cell">
-                {new Date(deal.product.available_at).toLocaleDateString()}
+                {deal.product.available_at
+                    ? new Date(deal.product.available_at).toLocaleDateString()
+                    : "-"}
             </TableCell>
             <TableCell className="hidden md:table-cell underline">
                 <Link href={`/email/${deal.brand.id}`}>{deal.brand.name}</Link>
