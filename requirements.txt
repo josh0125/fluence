@@ -1,2 +1,7 @@
 Flask==3.0.3
 requests
+imaplib2
+email
+SQLAlchemy
+psycopg2-binary
+python-dotenv
