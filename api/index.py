@@ -47,6 +47,10 @@ def scrape_email():
         # Fetch emails
         emails_data = fetch_emails(imap, num_emails)
 
+        # Save raw emails_data to a .txt file for testing
+        with open("raw_emails_data.txt", "w", encoding="utf-8") as f:
+            f.write(str(emails_data))
+
         # Save emails to database
         result = save_to_database(emails_data)
 
@@ -59,5 +63,6 @@ def scrape_email():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
+
