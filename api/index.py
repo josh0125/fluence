@@ -1,8 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 import requests
-from __utils.email_utils import connect_to_email, fetch_emails
-from __utils.db_mgmt import save_to_database
-
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -26,6 +24,7 @@ def test_api():
         return jsonify({"success": True, "data": response.json()})
     else:
         return jsonify({"success": False, "error": "Failed to access API"}), response.status_code
+<<<<<<< HEAD
 
 
 @app.route("/api/scrape-email", methods=["POST"])
@@ -66,3 +65,5 @@ def scrape_email():
 # if __name__ == "__main__":
 #     app.run(debug=True)
 
+=======
+>>>>>>> parent of 5ecf6b8 (Merge branch 'wilson/email-scraper-function')
