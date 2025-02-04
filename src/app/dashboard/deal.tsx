@@ -36,7 +36,9 @@ export function Deal({ deal }: { deal: DealData }) {
                 {new Date(deal.created_at).toLocaleDateString()}
             </TableCell>
             <TableCell className="hidden md:table-cell underline">
-                <Link href={`/email/${deal.brand.brand_id}`}>{deal.brand.brand_name}</Link>
+                <Link href={`/dashboard/email/${deal.brand.brand_id}`}>
+                    {deal.brand.brand_name}
+                </Link>
             </TableCell>
             <TableCell>
                 <DropdownMenu>
