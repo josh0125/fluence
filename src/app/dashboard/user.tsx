@@ -46,7 +46,7 @@ export function User() {
                     <DropdownMenuItem>
                         <button
                             onClick={() => {
-                                signOut();
+                                signOut({ callbackUrl: "/" });
                             }}
                         >
                             Sign Out
