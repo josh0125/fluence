@@ -80,7 +80,7 @@ function DesktopNav() {
                     <Users2 className="h-5 w-5" />
                 </NavItem> */}
 
-                <NavItem href="/email/1" label="Emails">
+                <NavItem href="/dashboard/email/1" label="Emails">
                     <Mail className="h-5 w-5" />
                 </NavItem>
             </nav>
@@ -146,7 +146,7 @@ function MobileNav() {
                         Brands
                     </Link> */}
                     <Link
-                        href="/email/1"
+                        href="/dashboard/email/1"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
                         <Mail className="h-5 w-5" />

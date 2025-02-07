@@ -24,7 +24,7 @@ export function BrandDropdown({ brands }: { brands: Brand[] }) {
             <DropdownMenuContent align="end">
                 {brands &&
                     brands.map((brand) => (
-                        <Link href={`/email/${brand.brand_id}`} key={brand.brand_id}>
+                        <Link href={`/dashboard/email/${brand.brand_id}`} key={brand.brand_id}>
                             <DropdownMenuItem>{brand.brand_name}</DropdownMenuItem>
                         </Link>
                     ))}

@@ -138,7 +138,9 @@ export function Deal({ deal }: { deal: DealData }) {
                 )}
             </TableCell>
             <TableCell className="hidden md:table-cell underline">
-                <Link href={`/email/${deal.brand.brand_id}`}>{deal.brand.brand_name}</Link>
+                <Link href={`/dashboard/email/${deal.brand.brand_id}`}>
+                    {deal.brand.brand_name}
+                </Link>
             </TableCell>
 
             {/* Actions Dropdown */}

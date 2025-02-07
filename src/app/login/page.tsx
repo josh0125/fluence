@@ -16,7 +16,7 @@ const LoginContent = () => {
 
     if (session) {
         // Redirect to the home page if already logged in
-        router.push("/");
+        router.push("/dashboard");
         return null;
     }
 
