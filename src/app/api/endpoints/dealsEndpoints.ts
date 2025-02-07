@@ -5,7 +5,7 @@ import { fetchCurrentUser } from "./userEndpoints";
 export const fetchAllDeals = async (user_id: number) => {
     const { data, error } = await supabase
         .from("deals")
-        .select("*, products(*, brands(*))")
+        .select("*, products(*, brands(*)), brand_representatives(*)")
         .eq("user_id", user_id);
 
     if (error) {
@@ -17,9 +17,12 @@ export const fetchAllDeals = async (user_id: number) => {
         data?.map((deal) => ({
             product: deal.products,
             brand: deal.products?.brands,
+            brand_rep: deal.brand_representatives,
             created_date: deal.created_at,
             deal_id: deal.deal_id,
             status: deal.status,
+            compensation: deal.compensation,
+            deliverables: deal.terms,
         })) || [];
 
     return deals;

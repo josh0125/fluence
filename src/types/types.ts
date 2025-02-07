@@ -28,9 +28,12 @@ export type User = {
 export type DealData = {
     product: Product;
     brand: Brand;
+    brand_rep: BrandRepresentative;
     created_at: string;
+    compensation: number;
+    deliverables: string;
     deal_id?: number;
-    status?: string;
+    status: string;
 };
 
 export type Deal = {
@@ -51,6 +54,7 @@ export type BrandRepresentative = {
     rep_id: number; // Primary key
     first_name: string;
     last_name: string;
+    title: string;
     email: string;
     brand_id: number; // Foreign key to brands table
     status: string; // Active, Inactive, etc.
